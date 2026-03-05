@@ -1,32 +1,113 @@
-# Project 3 Nextflow Template
+# RUNX1 ChIP-seq Analysis
 
-For this project, remember to keep in a few things:
+## Overview
+Implemented a reproducible Nextflow DSL2 ChIP-seq pipeline to identify genome-wide RUNX1 binding sites in breast cancer cells (GEO: GSE75070). 
 
-1. Most of the required references and files can be found in your `nextflow.config`
+The workflow performs quality control, alignment, peak calling, reproducibility filtering, motif enrichment, and integration with RNA-seq differential expression data.
 
-2. Make sure you give each process a label to request an appropriate amount of resources
+## Biological Question
+Does RUNX1 function as an architectural transcription factor by regulating promoter-proximal regions and influencing chromatin organization in breast cancer?
 
-3. Use the singularity containers provided on the website directions for the project
+## Dataset
+- Accession: GSE75070
+- Organism: Human (hg38)
+- Samples:
+    - RUNX1 ChIP Rep1
+    - RUNX1 ChIP Rep2
+    - INPUT Rep1
+    - INPUT Rep2
+- Single-end sequencing
 
-4. I have given you valid stub commands that will let you troubleshoot your workflow logic using the `-stub-run` command
-- The stub-run commands assume that the first element in the tuple from the initial channel is named `sample_id` in processes
-- Ensure that the appropriate inputs for certain processes are a tuple with the first element being the name from the initial channel
-- The findPeaks stub will not be the same as `sample_id`. Remember that you will need to run findPeaks using the paired samples
-(IP_rep1 + INPUT_rep1) and (IP_rep2 + INPUT_rep2). You should name the peak outputs using the replicate (i.e. rep1_peaks.txt and rep2_peaks.txt)
-- You may alter the names used in the stub-run if it's easier for you
+## Workflow
+<img src="./figures/flowchart.png" width="375" alt="Workflow DAG">
 
-The stub runs assume that you have something like below so that it can name the fake files using the sample names - this will ensure
-that your stub runs execute the same number of processes as the full pipeline should.
-```
-input:
-tuple val(sample_id), path(file)
-```
+FASTQC → Trimming → Bowtie2 Alignment →
+Samtools Sorting/Indexing →
+DeepTools Coverage & Correlation →
+HOMER Peak Calling →
+Reproducible Peak Intersection (BEDtools) →
+Motif Enrichment →
+RNA-seq Integration →
+Pathway Enrichment (Enrichr)
 
-5. Use the subsampled data to start out with - you may need to eventually switch to the full data before your
-pipeline is technically complete as sometimes peak calling may fail if not given enough input reads. 
-- When the pipeline is working, change the `params` value in the original channel to the params encoding the
-location of the full_samplesheet.csv
+Implemented using Nextflow DSL2 modular processes.
 
-6. To remove regions using the blacklist, there are optional flags available in the `bedtools intersect` command
+## Quality Control
+- 27–28M mapped reads (ChIP samples)
+- ~10M mapped reads (INPUT_rep2)
+- Phred scores > 30
+- Strong IP enrichment over INPUT
+- High replicate correlation
 
-7. Create a single jupyter notebook that contains all of the results / figures and your write-up
+Data quality sufficient for downstream analysis.
+
+## Key Results
+### Reproducible Peaks
+<img src="./figures/IP_rep1_signal_coverage.png" width="250" alt="Workflow DAG">
+<img src="./figures/IP_rep2_signal_coverage.png" width="250" alt="Workflow DAG">
+
+- 6,015 reproducible RUNX1 peaks
+- Promoter-enriched binding profile
+- Strong signal at TSS regions
+
+### Motif Enrichment
+<img src="./figures/knownresults.png" width="350" alt="Known Motifs">
+
+- RUNX family motifs (dominant)
+- YY1
+- FOXA family
+
+Indicates cooperative binding with architectural regulators.
+
+### RNA-seq Integration
+<img src="./figures/overlapping_chip_results_with_original_RNA-seq_data.png" width="250" alt="Workflow DAG">
+
+- ~20% of DE genes overlapped RUNX1 peaks
+- Higher than original study (8–10%)
+- Likely due to less stringent reproducibility filtering and hg38 reference usage
+
+### Pathway Enrichment
+<img src="./figures/Reactome_Pathways_bar_graph.png" width="300" alt="Workflow DAG">
+
+- Significant enrichment in:
+- VEGFR2-mediated vascular permeability
+- HSF1-dependent transactivation
+- FOXO transcription factor pathways
+- Histone modification complexes
+
+Supports RUNX1’s regulatory role in chromatin remodeling and tumor-associated pathways.
+
+
+## Comparison to Original Study
+### Differences observed in:
+- Number of reproducible peaks
+- Gene overlap percentage
+- Correlation metrics
+### Primary causes:
+- hg38 vs hg19 reference
+- Pearson vs Spearman correlation
+- Peak filtering stringency
+
+Biological conclusions remain consistent.
+
+## Technical Highlights
+- Modular Nextflow DSL2 workflow
+- Automated reproducibility filtering
+- Multi-omics integration (ChIP-seq + RNA-seq)
+- Peak intersection via BEDtools
+- Motif discovery via HOMER
+- Enrichment analysis via Enrichr
+- IGV validation of peak regions
+
+## Tools Used
+- FastQC
+- Trimmomatic
+- Bowtie2
+- Samtools
+- DeepTools
+- HOMER
+- BEDtools
+- Enrichr
+- IGV
+- Nextflow
+
