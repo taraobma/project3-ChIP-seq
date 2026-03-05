@@ -19,7 +19,7 @@ Does RUNX1 function as an architectural transcription factor by regulating promo
 - Single-end sequencing
 
 ## Workflow
-<img src="./figures/flowchart.png" width="375" alt="Workflow DAG">
+<img src="./figures/flowchart.png" width="450" alt="Workflow DAG">
 
 FASTQC → Trimming → Bowtie2 Alignment →
 Samtools Sorting/Indexing →
@@ -51,7 +51,7 @@ Data quality sufficient for downstream analysis.
 - Strong signal at TSS regions
 
 ### Motif Enrichment
-<img src="./figures/knownresults.png" width="350" alt="Known Motifs">
+<img src="./figures/knownresults.png" width="450" alt="Known Motifs">
 
 - RUNX family motifs (dominant)
 - YY1
@@ -60,14 +60,14 @@ Data quality sufficient for downstream analysis.
 Indicates cooperative binding with architectural regulators.
 
 ### RNA-seq Integration
-<img src="./figures/overlapping_chip_results_with_original_RNA-seq_data.png" width="250" alt="Workflow DAG">
+<img src="./figures/overlapping_chip_results_with_original_RNA-seq_data.png" width="350" alt="Workflow DAG">
 
 - ~20% of DE genes overlapped RUNX1 peaks
 - Higher than original study (8–10%)
 - Likely due to less stringent reproducibility filtering and hg38 reference usage
 
 ### Pathway Enrichment
-<img src="./figures/Reactome_Pathways_bar_graph.png" width="300" alt="Workflow DAG">
+<img src="./figures/Reactome_Pathways_bar_graph.png" width="450" alt="Workflow DAG">
 
 - Significant enrichment in:
 - VEGFR2-mediated vascular permeability
