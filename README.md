@@ -31,8 +31,8 @@ Implemented using modular Nextflow DSL2 processes.
 
 **1. Clone the repository**
 ```
-git clone https://github.com/username/your-repo-name.git
-cd your-repo-name
+git clone https://github.com/taraobma/project3-ChIP-seq.git
+cd project3-ChIP-seq
 ```
 
 
