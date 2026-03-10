@@ -21,10 +21,9 @@ promoter-proximal regions and influencing chromatin organization in breast cance
 ## Workflow
 <img src="./figures/flowchart.png" width="450" alt="Workflow DAG">
 
-FASTQC → TRIMMOMATIC → BOWTIE2_ALIGN → SAMTOOLS_SORT →
-DEEPTOOLS (coverage & correlation) → HOMER (peak calling) →
-BEDTOOLS (reproducible peak intersection) → Motif Enrichment → 
-RNA-seq Integration → Enrichr (pathway enrichment)
+FASTQC + BOWTIE2_BUILD → TRIM → BOWTIE2_ALIGN → SAMTOOLS_SORT/IDX/FLAGSTAT → 
+MULTIQC → DEEPTOOLS (coverage & correlation) → HOMER (peak calling & motif enrichment) → BEDTOOLS (reproducible peak intersection & blacklist removal) → ANNOTATE
+
 
 Implemented using modular Nextflow DSL2 processes.
 
